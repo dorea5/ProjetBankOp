@@ -1,30 +1,17 @@
 import './assets/img/bank-tree.jpeg';
-import argentbanklogo from './assets/img/argentBankLogo.webp';
 import iconchat from './assets/img/icon-chat.webp';
 import iconsecurity from './assets/img/icon-security.webp';
 import iconmoney from './assets/img/icon-money.webp';
 import './assets/css/main.css';
-
+import Header from './Header';
+import Footer from './Footer';
 
 function Home() {
   return (
     <>
-      <nav className="main-nav">
-        <a className="main-nav-logo" href="/">
-          <img
-            className="main-nav-logo-image"
-            src={argentbanklogo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </a>
-        <div>
-          <a className="main-nav-item" href="/sign-in">
-            <i className="fa fa-user-circle"></i>
-            Sign In
-          </a>
-        </div>
-      </nav>
+      <Header />
+
+
       <main>
         <div className="hero">
           <section className="hero-content">
@@ -70,9 +57,7 @@ function Home() {
           </div>
         </section>
       </main>
-      <footer className="footer">
-        <p className="footer-text">Copyright 2020 Argent Bank</p>
-      </footer>
+      <Footer />
     </>
   );
 }
