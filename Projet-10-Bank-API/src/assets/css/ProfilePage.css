@@ -1,0 +1,119 @@
+.profile-page {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info span {
+  margin-right: 10px;
+}
+
+.user-info button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+main {
+  padding: 20px;
+}
+
+main h2 {
+  margin-top: 0;
+}
+
+.name-edit {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.name-edit input {
+  margin-right: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.name-edit button {
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.name-edit button+button {
+  background-color: #fff;
+  color: #6c757d;
+  border: 1px solid #ccc;
+}
+
+.account {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.account-content-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-title {
+  margin: 0 0 10px;
+}
+
+.account-amount {
+  font-size: 24px;
+  margin: 5px 0;
+}
+
+.account-amount-description {
+  margin: 5px 0;
+}
+
+.cta {
+  margin-top: 20px;
+}
+
+.transaction-button {
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+footer {
+  background-color: #fff;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}

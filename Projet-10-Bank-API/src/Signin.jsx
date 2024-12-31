@@ -24,10 +24,11 @@ function SignIn() {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token); // Stocke le token dans localStorage
-        navigate('/User'); // Redirige vers la page utilisateur après connexion
+        console.log('API Response:', data);
+        localStorage.setItem('token', data.body.token);
+        navigate('/User');
       } else {
-        setError('Invalid username or password'); // Affiche une erreur en cas d’échec
+        setError('Invalid username or password');
       }
     } catch (err) {
       console.error(err);

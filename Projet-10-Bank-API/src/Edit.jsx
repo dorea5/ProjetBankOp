@@ -1,17 +1,41 @@
-
 import Footer from "./Footer";
-import "./assets/css/main.css";
 import argentbanklogo from './assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import "./assets/css/ProfilePage.css";
 import { Link } from 'react-router-dom';
 
 
+const Edit = () => {
+  const [firstName, setFirstName] = useState('Tony');
+  const [lastName, setLastName] = useState('Jarvis');
 
+  const handleSave = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ firstName, lastName }),
+      });
 
-function User() {
+      if (response.ok) {
+        alert('Profile updated successfully!');
+      } else {
+        alert('Failed to update profile.');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('An error occurred while updating the profile.');
+    }
+  };
+
   return (
-    <>
+    <div className="profile-page">
       <nav className="main-nav">
         <a className="main-nav-logo" href="/">
           <img
@@ -28,20 +52,17 @@ function User() {
 
             Sign out
           </Link>
-
         </div>
       </nav>
-      <main className="main bg-dark">
-        <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            Tony Rogers!
-          </h1>
-          <Link to="/edit" className="edit-button">Edit Name</Link>
-
-        </div>
+      <main>
         <h2 className="sr-only">Accounts</h2>
+        <h2>Welcome back</h2>
+        <div className="name-edit">
+          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+          <button onClick={handleSave}>Save</button>
+          <button onClick={() => { }}>Cancel</button>
+        </div>
         <section className="account">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Checking (x8349)</h3>
@@ -64,7 +85,7 @@ function User() {
         </section>
         <section className="account">
           <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
+            <h3 className="account-title">Argent Bank Credit Card (x5201)</h3>
             <p className="account-amount">$184.30</p>
             <p className="account-amount-description">Current Balance</p>
           </div>
@@ -74,8 +95,8 @@ function User() {
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   );
-}
+};
 
-export default User;
+export default Edit;
