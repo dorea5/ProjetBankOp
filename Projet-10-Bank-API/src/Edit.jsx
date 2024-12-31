@@ -3,18 +3,20 @@ import argentbanklogo from './assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importer useNavigate
 import "./assets/css/ProfilePage.css";
 import { Link } from 'react-router-dom';
-
 
 const Edit = () => {
   const [firstName, setFirstName] = useState('Tony');
   const [lastName, setLastName] = useState('Jarvis');
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     const token = localStorage.getItem('token');
+
     try {
-      const response = await fetch('/user/profile', {
+      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -32,6 +34,10 @@ const Edit = () => {
       console.error('Error updating profile:', error);
       alert('An error occurred while updating the profile.');
     }
+  };
+
+  const handleCancel = () => {
+    navigate('/User');
   };
 
   return (
@@ -61,7 +67,8 @@ const Edit = () => {
           <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
           <button onClick={handleSave}>Save</button>
-          <button onClick={() => { }}>Cancel</button>
+          <button onClick={handleCancel}>Cancel</button>
+
         </div>
         <section className="account">
           <div className="account-content-wrapper">
