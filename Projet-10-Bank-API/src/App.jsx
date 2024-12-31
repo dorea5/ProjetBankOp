@@ -5,6 +5,7 @@ import store from "./store";
 import Home from "./Home";
 import SignIn from "./Signin";
 import "./App.css";
+import User from "./User"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/user" element={<User />} />
 
         </Routes>
       </Router>
