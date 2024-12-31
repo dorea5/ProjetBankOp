@@ -52,7 +52,7 @@ const Edit = () => {
           <h1 className="sr-only">Argent Bank</h1>
         </a>
         <div>
-          <Link className="main-nav-item" to="/">
+          <Link className="main-nav-item" to="/sign-out">
             <i className="fa fa-user-circle"></i>
             <FontAwesomeIcon icon={faArrowRightFromBracket} color="grey" className="iconspace" />
 
