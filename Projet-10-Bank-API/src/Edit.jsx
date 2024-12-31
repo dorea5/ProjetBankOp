@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const Edit = () => {
   const [firstName, setFirstName] = useState('Tony');
-  const [lastName, setLastName] = useState('Jarvis');
+  const [lastName, setLastName] = useState('jarvis');
   const navigate = useNavigate();
 
   const handleSave = async () => {

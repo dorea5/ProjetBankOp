@@ -1,10 +1,8 @@
-
 import './assets/css/main.css';
 import Header from "./Header";
 import Footer from './Footer';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './assets/css/main.css';
 
 function SignIn() {
   const [username, setUsername] = useState('');
@@ -24,8 +22,8 @@ function SignIn() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('API Response:', data);
-        localStorage.setItem('token', data.body.token);
+        console.log('API Response:', data); // Ajoutez cette ligne pour vérifier la réponse
+        localStorage.setItem('token', data.body.token); // Stockez le jeton JWT
         navigate('/User');
       } else {
         setError('Invalid username or password');
@@ -77,4 +75,3 @@ function SignIn() {
 }
 
 export default SignIn;
-

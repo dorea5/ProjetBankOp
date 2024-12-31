@@ -1,15 +1,44 @@
-
 import Footer from "./Footer";
 import "./assets/css/main.css";
 import argentbanklogo from './assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-
-
-
+import { useEffect, useState } from 'react';
 
 function User() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:3001/api/v1/user/profile', {
+            method: 'POST', // Utilisez POST car votre API ne supporte pas GET
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setFirstName(data.body.firstName);
+            setLastName(data.body.lastName);
+          } else {
+            console.error('Failed to fetch user data');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <>
       <nav className="main-nav">
@@ -22,13 +51,11 @@ function User() {
           <h1 className="sr-only">Argent Bank</h1>
         </a>
         <div>
-          <Link className="main-nav-item" to="/">
+          <Link className="main-nav-item" to="/sign-out">
             <i className="fa fa-user-circle"></i>
             <FontAwesomeIcon icon={faArrowRightFromBracket} color="grey" className="iconspace" />
-
             Sign out
           </Link>
-
         </div>
       </nav>
       <main className="main bg-dark">
@@ -36,10 +63,9 @@ function User() {
           <h1>
             Welcome back
             <br />
-            Tony Rogers!
+            {firstName} {lastName}!
           </h1>
           <Link to="/edit" className="edit-button">Edit Name</Link>
-
         </div>
         <h2 className="sr-only">Accounts</h2>
         <section className="account">
@@ -64,7 +90,7 @@ function User() {
         </section>
         <section className="account">
           <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
+            <h3 className="account-title">Argent Bank Credit Card (x5201)</h3>
             <p className="account-amount">$184.30</p>
             <p className="account-amount-description">Current Balance</p>
           </div>
