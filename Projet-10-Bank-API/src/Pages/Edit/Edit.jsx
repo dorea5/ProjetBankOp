@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const Edit = () => {
   const [firstName, setFirstName] = useState('Tony');
-  const [lastName, setLastName] = useState('jarvis');
+  const [lastName, setLastName] = useState('Jarvis');
   const navigate = useNavigate();
 
   const handleSave = async () => {
@@ -40,22 +40,25 @@ const Edit = () => {
     navigate('/User');
   };
 
+  const handleViewTransactions = () => {
+    navigate('/transactions');
+  };
+
   return (
     <div className="profile-page">
       <nav className="main-nav">
-        <a className="main-nav-logo" href="/">
+        <Link className="main-nav-logo" to="/">
           <img
             className="main-nav-logo-image"
             src={argentbanklogo}
             alt="Argent Bank Logo"
           />
           <h1 className="sr-only">Argent Bank</h1>
-        </a>
+        </Link>
         <div>
           <Link className="main-nav-item" to="/sign-out">
             <i className="fa fa-user-circle"></i>
             <FontAwesomeIcon icon={faArrowRightFromBracket} color="grey" className="iconspace" />
-
             Sign out
           </Link>
         </div>
@@ -68,7 +71,6 @@ const Edit = () => {
           <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
           <button onClick={handleSave}>Save</button>
           <button onClick={handleCancel}>Cancel</button>
-
         </div>
         <section className="account">
           <div className="account-content-wrapper">
@@ -77,7 +79,9 @@ const Edit = () => {
             <p className="account-amount-description">Available Balance</p>
           </div>
           <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
+            <button className="transaction-button" onClick={handleViewTransactions}>
+              View transactions
+            </button>
           </div>
         </section>
         <section className="account">
@@ -87,7 +91,9 @@ const Edit = () => {
             <p className="account-amount-description">Available Balance</p>
           </div>
           <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
+            <button className="transaction-button" onClick={handleViewTransactions}>
+              View transactions
+            </button>
           </div>
         </section>
         <section className="account">
@@ -97,7 +103,9 @@ const Edit = () => {
             <p className="account-amount-description">Current Balance</p>
           </div>
           <div className="account-content-wrapper cta">
-            <button className="transaction-button">View transactions</button>
+            <button className="transaction-button" onClick={handleViewTransactions}>
+              View transactions
+            </button>
           </div>
         </section>
       </main>

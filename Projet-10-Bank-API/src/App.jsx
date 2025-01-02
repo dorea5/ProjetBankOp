@@ -9,6 +9,7 @@ import User from "./Pages/Profile/User";
 import Edit from "./Pages/Edit/Edit";
 import SignUp from "./Pages/SignUp/SignUp";
 import SignOut from "./Pages/SignOut/SignOut";
+import Transactions from "./Pages/Transactions/Transaction";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/user" element={<User />} />
           <Route path="/edit" element={<Edit />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/transactions" element={<Transactions />} />
 
 
         </Routes>

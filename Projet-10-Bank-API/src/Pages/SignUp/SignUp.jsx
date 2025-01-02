@@ -14,7 +14,8 @@ function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log('SignUp Data:', { email, password, firstName, lastName });
+
+    console.log('SignUp Data:', { email, password, firstName, lastName }); // Ajoutez cette ligne pour vérifier les données envoyées
 
     try {
       const response = await fetch('http://localhost:3001/api/v1/user/signup', {
@@ -28,6 +29,8 @@ function SignUp() {
         console.log('SignUp Response:', data);
         navigate('/sign-in');
       } else {
+        const errorData = await response.json();
+        console.error('SignUp Error:', errorData);
         setError('Failed to sign up. Please try again.');
       }
     } catch (err) {

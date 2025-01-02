@@ -1,6 +1,6 @@
 import Footer from "../../Components/Footer";
 import "../../assets/css/main.css";
-import argentbanklogo from '../../assets/img/argentBankLogo.webp'
+import argentbanklogo from '../../assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -19,16 +19,18 @@ function User() {
             method: 'POST', // Utilisez POST car votre API ne supporte pas GET
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
+              'Authorization': `Bearer ${token}`, // Assurez-vous que l'en-tête est correctement orthographiée
             },
           });
 
           if (response.ok) {
             const data = await response.json();
+            console.log('User Data:', data); // Ajoutez cette ligne pour vérifier la réponse
             setFirstName(data.body.firstName);
             setLastName(data.body.lastName);
           } else {
-            console.error('Failed to fetch user data');
+            const errorData = await response.json();
+            console.error('Failed to fetch user data:', errorData);
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -42,14 +44,14 @@ function User() {
   return (
     <>
       <nav className="main-nav">
-        <a className="main-nav-logo" href="/">
+        <Link className="main-nav-logo" to="/">
           <img
             className="main-nav-logo-image"
             src={argentbanklogo}
             alt="Argent Bank Logo"
           />
           <h1 className="sr-only">Argent Bank</h1>
-        </a>
+        </Link>
         <div>
           <Link className="main-nav-item" to="/sign-out">
             <i className="fa fa-user-circle"></i>
