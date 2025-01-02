@@ -1,6 +1,6 @@
-import './assets/css/main.css';
-import Header from "./Header";
-import Footer from './Footer';
+import '../../assets/css/main.css';
+import Header from "../../Components/Header";
+import Footer from '../../Components/Footer';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    console.log('SignUp Data:', { email, password, firstName, lastName });
 
     try {
       const response = await fetch('http://localhost:3001/api/v1/user/signup', {

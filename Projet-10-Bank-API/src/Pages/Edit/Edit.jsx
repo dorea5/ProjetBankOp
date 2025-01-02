@@ -1,46 +1,47 @@
-import Footer from "./Footer";
-import "./assets/css/main.css";
-import argentbanklogo from './assets/img/argentBankLogo.webp';
+import Footer from "../../Components/Footer";
+import argentbanklogo from '../../assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importer useNavigate
+import '../../assets/css/edit.css';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
-function User() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+const Edit = () => {
+  const [firstName, setFirstName] = useState('Tony');
+  const [lastName, setLastName] = useState('jarvis');
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-            method: 'POST', // Utilisez POST car votre API ne supporte pas GET
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-          });
+  const handleSave = async () => {
+    const token = localStorage.getItem('token');
 
-          if (response.ok) {
-            const data = await response.json();
-            setFirstName(data.body.firstName);
-            setLastName(data.body.lastName);
-          } else {
-            console.error('Failed to fetch user data');
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
+    try {
+      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ firstName, lastName }),
+      });
+
+      if (response.ok) {
+        alert('Profile updated successfully!');
+      } else {
+        alert('Failed to update profile.');
       }
-    };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('An error occurred while updating the profile.');
+    }
+  };
 
-    fetchUserData();
-  }, []);
+  const handleCancel = () => {
+    navigate('/User');
+  };
 
   return (
-    <>
+    <div className="profile-page">
       <nav className="main-nav">
         <a className="main-nav-logo" href="/">
           <img
@@ -54,20 +55,21 @@ function User() {
           <Link className="main-nav-item" to="/sign-out">
             <i className="fa fa-user-circle"></i>
             <FontAwesomeIcon icon={faArrowRightFromBracket} color="grey" className="iconspace" />
+
             Sign out
           </Link>
         </div>
       </nav>
-      <main className="main bg-dark">
-        <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            {firstName} {lastName}!
-          </h1>
-          <Link to="/edit" className="edit-button">Edit Name</Link>
-        </div>
+      <main>
         <h2 className="sr-only">Accounts</h2>
+        <h2>Welcome back</h2>
+        <div className="name-edit">
+          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+          <button onClick={handleSave}>Save</button>
+          <button onClick={handleCancel}>Cancel</button>
+
+        </div>
         <section className="account">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Checking (x8349)</h3>
@@ -100,8 +102,8 @@ function User() {
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   );
-}
+};
 
-export default User;
+export default Edit;

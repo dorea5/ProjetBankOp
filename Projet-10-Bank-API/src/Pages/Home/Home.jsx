@@ -1,10 +1,10 @@
-import './assets/img/bank-tree.jpeg';
-import iconchat from './assets/img/icon-chat.webp';
-import iconsecurity from './assets/img/icon-security.webp';
-import iconmoney from './assets/img/icon-money.webp';
-import './assets/css/main.css';
-import Header from './Header';
-import Footer from './Footer';
+import '../../assets/img/bank-tree.jpeg';
+import iconchat from '../../assets/img/icon-chat.webp';
+import iconsecurity from '../../assets/img/icon-security.webp';
+import iconmoney from '../../assets/img/icon-money.webp';
+import '../../assets/css/main.css';
+import Header from '../../Components/Header';
+import Footer from '../../Components/Footer';
 
 function Home() {
   return (

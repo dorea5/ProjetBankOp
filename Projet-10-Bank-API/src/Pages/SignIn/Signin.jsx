@@ -1,6 +1,6 @@
-import './assets/css/main.css';
-import Header from "./Header";
-import Footer from './Footer';
+import '../../assets/css/main.css';
+import Header from "../../Components/Header";
+import Footer from '../../Components/Footer';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

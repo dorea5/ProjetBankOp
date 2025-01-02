@@ -1,5 +1,5 @@
-import argentbanklogo from './assets/img/argentBankLogo.webp';
-import './assets/css/main.css';
+import argentbanklogo from '../../src/assets/img/argentBankLogo.webp';
+import '../assets/css/main.css';
 
 
 function Header() {
