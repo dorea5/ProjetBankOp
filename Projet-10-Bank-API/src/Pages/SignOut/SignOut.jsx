@@ -11,7 +11,7 @@ const SignOut = () => {
     navigate('/sign-in');
   }, [navigate]);
 
-  return null; //  il redirige 
+  return null;
 };
 
 export default SignOut;

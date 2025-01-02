@@ -3,7 +3,7 @@ import argentbanklogo from '../../assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importer useNavigate
+import { useNavigate } from 'react-router-dom';
 import '../../assets/css/edit.css';
 import { Link } from 'react-router-dom';
 

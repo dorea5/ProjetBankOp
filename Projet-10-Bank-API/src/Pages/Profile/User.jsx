@@ -16,16 +16,16 @@ function User() {
       if (token) {
         try {
           const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-            method: 'POST', // Utilisez POST car votre API ne supporte pas GET
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`, // Assurez-vous que l'en-tête est correctement orthographiée
+              'Authorization': `Bearer ${token}`,
             },
           });
 
           if (response.ok) {
             const data = await response.json();
-            console.log('User Data:', data); // Ajoutez cette ligne pour vérifier la réponse
+            console.log('User Data:', data);
             setFirstName(data.body.firstName);
             setLastName(data.body.lastName);
           } else {

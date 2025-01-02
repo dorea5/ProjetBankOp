@@ -11,7 +11,7 @@ function SignIn() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
+    e.preventDefault();
 
     try {
       const response = await fetch('http://localhost:3001/api/v1/user/login', {
@@ -22,8 +22,8 @@ function SignIn() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('API Response:', data); // Ajoutez cette ligne pour vérifier la réponse
-        localStorage.setItem('token', data.body.token); // Stockez le jeton JWT
+        console.log('API Response:', data);
+        localStorage.setItem('token', data.body.token);
         navigate('/User');
       } else {
         setError('Invalid username or password');
