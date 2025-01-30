@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// authentification de l'utilisateur
+// Authentification de l'utilisateur
 export const loginUser = createAsyncThunk('user/login', async (credentials, { rejectWithValue }) => {
   try {
     const response = await fetch('http://localhost:3001/api/v1/user/login', {
@@ -21,7 +21,7 @@ export const loginUser = createAsyncThunk('user/login', async (credentials, { re
   }
 });
 
-// récupérer les informations utilisateur
+// Récupérer les informations utilisateur
 export const fetchUserProfile = createAsyncThunk('user/fetchProfile', async (_, { getState, rejectWithValue }) => {
   const token = getState().user.token;
   if (!token) return rejectWithValue('No token found');
@@ -84,7 +84,7 @@ const userSlice = createSlice({
     logout: (state) => {
       state.token = null;
       state.userData = null;
-      localStorage.removeItem('token');
+      localStorage.removeItem('token'); // Supprime le token du localStorage
     },
   },
   extraReducers: (builder) => {
