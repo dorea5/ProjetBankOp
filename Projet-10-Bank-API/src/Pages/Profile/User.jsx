@@ -4,43 +4,18 @@ import argentbanklogo from '../../assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserProfile } from "../../Redux/reducers/userSlice";
 
 function User() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+
+  const dispatch = useDispatch();
+  const { userData, loading, error } = useSelector(state => state.user);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            console.log('User Data:', data);
-            setFirstName(data.body.firstName);
-            setLastName(data.body.lastName);
-          } else {
-            const errorData = await response.json();
-            console.error('Failed to fetch user data:', errorData);
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
   return (
     <>
       <nav className="main-nav">
@@ -65,8 +40,10 @@ function User() {
           <h1>
             Welcome back
             <br />
-            {firstName} {lastName}!
+            {loading ? "Loading..." : userData ? `${userData.firstName} ${userData.lastName}` : "User"}
           </h1>
+
+          {error && <p className="error-message">{error}</p>}
           <Link to="/edit" className="edit-button">Edit Name</Link>
         </div>
         <h2 className="sr-only">Accounts</h2>

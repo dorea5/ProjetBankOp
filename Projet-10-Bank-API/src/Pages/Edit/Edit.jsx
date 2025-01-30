@@ -6,33 +6,35 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/css/edit.css';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserProfile } from '../../Redux/reducers/userSlice';
+import { useEffect } from "react";
+
 
 const Edit = () => {
-  const [firstName, setFirstName] = useState('Tony');
-  const [lastName, setLastName] = useState('Jarvis');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userData); //accès état utilisateur via redux
   const navigate = useNavigate();
 
+  //initialiser les champs avec les données user venant de redux
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+    }
+  }, [user]);
+
   const handleSave = async () => {
-    const token = localStorage.getItem('token');
-
     try {
-      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ firstName, lastName }),
-      });
-
-      if (response.ok) {
-        alert('Profile updated successfully!');
-      } else {
-        alert('Failed to update profile.');
-      }
+      // Dispatch de l'action pour maj le profil via redux
+      await dispatch(updateUserProfile({ firstName, lastName }));
+      alert('Profile updated successfully!');
+      navigate("/User");
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('An error occurred while updating the profile.');
+      alert('Failed to update profile.');
     }
   };
 

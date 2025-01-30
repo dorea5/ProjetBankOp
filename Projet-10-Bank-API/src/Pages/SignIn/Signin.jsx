@@ -3,34 +3,23 @@ import Header from "../../Components/Header";
 import Footer from '../../Components/Footer';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../Redux/reducers/userSlice";
 
 function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const { loading, error } = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('http://localhost:3001/api/v1/user/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: username, password }),
-      });
+    const result = await dispatch(loginUser({ email: username, password }));
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('API Response:', data);
-        localStorage.setItem('token', data.body.token);
-        navigate('/User');
-      } else {
-        setError('Invalid username or password');
-      }
-    } catch (err) {
-      console.error(err);
-      setError('An error occurred. Please try again later.');
+    if (result.meta.requestStatus === 'fulfilled') {
+      navigate('/user');
     }
   };
 
@@ -65,7 +54,8 @@ function SignIn() {
               <label htmlFor="remember-me">Remember me</label>
             </div>
             {error && <p className="error-message">{error}</p>}
-            <button type="submit" className="sign-in-button">Sign In</button>
+            <button type="submit" className="sign-in-button" disabled={loading}> {loading ? "Loading..." : "Sign In"}
+            </button>
           </form>
         </section>
       </main>
