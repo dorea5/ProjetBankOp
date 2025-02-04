@@ -2,7 +2,8 @@ import Footer from "../../Components/Footer";
 import "../../assets/css/main.css";
 import argentbanklogo from '../../assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
@@ -27,13 +28,18 @@ function User() {
           />
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
+
         <div>
+          <FontAwesomeIcon icon={faCircleUser} className="iconspace" />
+          {loading ? "Loading..." : userData ? `${userData.firstName} ` : "User"}
+
           <Link className="main-nav-item" to="/sign-out">
-            <i className="fa fa-user-circle"></i>
-            <FontAwesomeIcon icon={faArrowRightFromBracket} color="grey" className="iconspace" />
+            <FontAwesomeIcon icon={faRightToBracket} className="iconspace" />
             Sign out
           </Link>
+
         </div>
+
       </nav>
       <main className="main bg-dark">
         <div className="header">

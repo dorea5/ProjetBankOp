@@ -1,10 +1,13 @@
-import '../../assets/css/main.css';
+import '../../assets/css/main.css'
 import Header from "../../Components/Header";
 import Footer from '../../Components/Footer';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../Redux/reducers/userSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+
 
 function SignIn() {
   const [username, setUsername] = useState('');
@@ -28,7 +31,7 @@ function SignIn() {
       <Header />
       <main className="main bg-dark">
         <section className="sign-in-content">
-          <i className="fa fa-user-circle sign-in-icon"></i>
+          <FontAwesomeIcon icon={faCircleUser} />
           <h1>Sign In</h1>
           <form onSubmit={handleLogin}>
             <div className="input-wrapper">

@@ -1,10 +1,11 @@
 import Footer from "../../Components/Footer";
 import argentbanklogo from '../../assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../assets/css/edit.css';
+import '../../assets/css/main.css';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserProfile } from '../../Redux/reducers/userSlice';
@@ -15,6 +16,7 @@ const Edit = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const dispatch = useDispatch();
+  const { userData, loading, } = useSelector(state => state.user);
   const user = useSelector((state) => state.user.userData); //accès état utilisateur via redux
   const navigate = useNavigate();
 
@@ -58,9 +60,13 @@ const Edit = () => {
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
         <div>
+          <Link className="link" to="/User">
+            <FontAwesomeIcon icon={faCircleUser} className="iconspace" />
+            {loading ? "Loading..." : userData ? `${userData.firstName} ` : "User"}
+          </Link>
           <Link className="main-nav-item" to="/sign-out">
             <i className="fa fa-user-circle"></i>
-            <FontAwesomeIcon icon={faArrowRightFromBracket} color="grey" className="iconspace" />
+            <FontAwesomeIcon icon={faRightToBracket} className="iconspace" />
             Sign out
           </Link>
         </div>
