@@ -28,7 +28,7 @@ export const fetchUserProfile = createAsyncThunk(
     const { token } = getState().user;
 
     const response = await fetch("http://localhost:3001/api/v1/user/profile", {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -89,11 +89,11 @@ export const updateUserProfile = createAsyncThunk(
           dispatch(logoutUser()); // Déconnecte l'utilisateur
           return;
         }
-        // Si autre erreur, lève une exception
+        // Si autre erreur lève une exception
         throw new Error(`Erreur API: ${response.status} - ${data.message}`);
       }
 
-      // Si tout va bien, retour des données mises à jour
+      // Si tout va bien retour des données mises à jour
       const data = await response.json();
       return data;
 
