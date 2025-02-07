@@ -1,8 +1,9 @@
 import Footer from "../../Components/Footer";
 import argentbanklogo from '../../assets/img/argentBankLogo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/css/main.css';
@@ -10,30 +11,44 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserProfile } from '../../Redux/reducers/userSlice';
 import { useEffect } from "react";
+import { fetchUserProfile } from '../../Redux/reducers/userSlice';
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+
 
 
 const Edit = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
   const dispatch = useDispatch();
   const { userData, loading, } = useSelector(state => state.user);
-  const user = useSelector((state) => state.user.userData); //accès état utilisateur via redux
   const navigate = useNavigate();
 
-  //initialiser les champs avec les données user venant de redux
   useEffect(() => {
-    if (user) {
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
+    console.log("Fetching user profile...");
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log("User data reçu:", userData);
+    if (!userData) {
+      console.warn("Utilisateur non connecté !");
+      navigate('/sign-in'); // Redirige vers la page de connexion
     }
-  }, [user]);
+    if (userData?.username) {
+      setUsername(userData.username);
+    }
+  }, [userData, navigate]);
+
 
   const handleSave = async () => {
+    console.log("Save button clicked"); // DEBUG
     try {
-      // Dispatch de l'action pour maj le profil via redux
-      await dispatch(updateUserProfile({ firstName, lastName }));
-      alert('Profile updated successfully!');
-      navigate("/User");
+      const result = await dispatch(updateUserProfile({ userName: username }));
+      console.log("Redux action result:", result); // DEBUG
+      if (result.meta.requestStatus === 'fulfilled') {
+        alert('Profile updated successfully!');
+        await dispatch(fetchUserProfile()); // Recharge les données
+        navigate("/User"); // Redirige après mise à jour
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Failed to update profile.');
@@ -41,12 +56,13 @@ const Edit = () => {
   };
 
   const handleCancel = () => {
+    console.log("Cancel button clicked"); // DEBUG
     navigate('/User');
   };
 
-  const handleViewTransactions = () => {
-    navigate('/transactions');
-  };
+
+
+
 
   return (
     <div className="profile-page">
@@ -59,62 +75,80 @@ const Edit = () => {
           />
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
-        <div>
+        <div className="row">
+
           <Link className="link" to="/User">
-            <FontAwesomeIcon icon={faCircleUser} className="iconspace" />
-            {loading ? "Loading..." : userData ? `${userData.firstName} ` : "User"}
+            <div className="greencolor">
+              {loading ? "Loading..." : userData ? `${userData.firstName} ` : "User"}
+              <FontAwesomeIcon icon={faUser} className="iconspace-green" />
+
+
+            </div>
           </Link>
+
+          <FontAwesomeIcon icon={faGear} className="iconspace-green" />
           <Link className="main-nav-item" to="/sign-out">
-            <i className="fa fa-user-circle"></i>
-            <FontAwesomeIcon icon={faRightToBracket} className="iconspace" />
-            Sign out
+
+            <FontAwesomeIcon icon={faPowerOff} className="iconspace-green" />
           </Link>
         </div>
+
+
+
       </nav>
       <main>
         <h2 className="sr-only">Accounts</h2>
-        <h2>Welcome back</h2>
-        <div className="name-edit">
-          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-          <button onClick={handleSave}>Save</button>
-          <button onClick={handleCancel}>Cancel</button>
+        <h2>Edit user info</h2>
+        <div className="name-edit " >
+          <div className="row">
+            <label htmlFor="username">User name:</label><br />
+            <input className="inputedit"
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+
+            /><br />
+          </div>
+          <div className="row">
+            <label htmlFor="firstName">First Name:</label><br />
+            <input className="inputedit-grey" type="text" id="firstName" value={userData?.firstName || ''} readOnly /><br /> {/* readOnly */}
+          </div>
+          <div className="row">
+            <label htmlFor="lastName">Last Name:</label><br />
+            <input className="inputedit-grey" type="text" id="lastName" value={userData?.lastName || ''} readOnly /><br /> {/* readOnly */}
+          </div>
+          <div className="row">
+            <button className="green" onClick={handleSave}>Save</button>
+            <button className="green" onClick={handleCancel}>Cancel</button>
+          </div>
         </div>
-        <section className="account">
-          <div className="account-content-wrapper">
+        <section className="account-edit">
+          <div className="account-content-wrapper-edit">
             <h3 className="account-title">Argent Bank Checking (x8349)</h3>
             <p className="account-amount">$2,082.79</p>
             <p className="account-amount-description">Available Balance</p>
+            <FontAwesomeIcon className="arrow-edit" icon={faChevronRight} />
           </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button" onClick={handleViewTransactions}>
-              View transactions
-            </button>
-          </div>
+
         </section>
-        <section className="account">
-          <div className="account-content-wrapper">
+        <section className="account-edit">
+          <div className="account-content-wrapper-edit">
             <h3 className="account-title">Argent Bank Savings (x6712)</h3>
             <p className="account-amount">$10,928.42</p>
             <p className="account-amount-description">Available Balance</p>
+            <FontAwesomeIcon className="arrow-edit" icon={faChevronRight} />
           </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button" onClick={handleViewTransactions}>
-              View transactions
-            </button>
-          </div>
+
         </section>
-        <section className="account">
-          <div className="account-content-wrapper">
+        <section className="account-edit">
+          <div className="account-content-wrapper-edit">
             <h3 className="account-title">Argent Bank Credit Card (x5201)</h3>
             <p className="account-amount">$184.30</p>
             <p className="account-amount-description">Current Balance</p>
+            <FontAwesomeIcon className="arrow-edit" icon={faChevronRight} />
           </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button" onClick={handleViewTransactions}>
-              View transactions
-            </button>
-          </div>
+
         </section>
       </main>
       <Footer />

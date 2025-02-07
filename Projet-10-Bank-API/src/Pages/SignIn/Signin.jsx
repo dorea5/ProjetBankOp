@@ -1,12 +1,13 @@
-import '../../assets/css/main.css'
+import '../../assets/css/main.css';
 import Header from "../../Components/Header";
-import Footer from '../../Components/Footer';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../Redux/reducers/userSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+
+
 
 
 function SignIn() {
@@ -62,7 +63,9 @@ function SignIn() {
           </form>
         </section>
       </main>
-      <Footer />
+      <footer className="footer">
+        <p className="footer-text">Copyright 2020 Argent Bank</p>
+      </footer>
     </div>
   );
 }

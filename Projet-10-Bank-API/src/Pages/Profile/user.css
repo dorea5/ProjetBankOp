@@ -113,6 +113,11 @@ body {
   color: #888;
 }
 
+.space {
+  display: flex;
+  justify-content: space-between;
+}
+
 .transaction-table td .fa-pencil-alt:hover {
   color: #00bc87;
 }

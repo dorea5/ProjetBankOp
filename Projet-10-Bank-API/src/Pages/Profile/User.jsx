@@ -17,6 +17,11 @@ function User() {
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch, userData]); // Ajout de `userData` pour déclencher la mise à jour
+
+
   return (
     <>
       <nav className="main-nav">
