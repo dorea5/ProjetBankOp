@@ -31,27 +31,38 @@ const Edit = () => {
     console.log("User data reçu:", userData);
     if (!userData) {
       console.warn("Utilisateur non connecté !");
-      navigate('/sign-in'); // Redirige vers la page de connexion
     }
-    if (userData?.username) {
-      setUsername(userData.username);
+    if (userData?.userName) { // Vérifie que la clé est correcte
+      setUsername(userData.userName);
     }
   }, [userData, navigate]);
 
 
   const handleSave = async () => {
-    console.log("Save button clicked"); // DEBUG
+    console.log("Save button clicked");
+
     try {
+      console.log("Valeur de username avant l'envoi:", username);
+
+      if (!username || username.trim() === "") {
+        console.error("Erreur: username est vide ou undefined");
+        alert("Le champ username ne peut pas être vide.");
+        return;
+      }
+
       const result = await dispatch(updateUserProfile({ userName: username }));
-      console.log("Redux action result:", result); // DEBUG
-      if (result.meta.requestStatus === 'fulfilled') {
-        alert('Profile updated successfully!');
-        await dispatch(fetchUserProfile()); // Recharge les données
-        navigate("/User"); // Redirige après mise à jour
+      console.log("Redux action result:", result);
+
+      if (updateUserProfile.fulfilled.match(result)) {
+        console.log("User data mis à jour:", result.payload);
+        alert("Profile updated successfully!");
+      } else {
+        console.error("Error updating profile:", result.payload);
+        alert("Failed to update profile: " + result.payload);
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to update profile.');
+      console.error("Unexpected error:", error);
+      alert("An unexpected error occurred");
     }
   };
 
@@ -79,7 +90,7 @@ const Edit = () => {
 
           <Link className="link" to="/User">
             <div className="greencolor">
-              {loading ? "Loading..." : userData ? `${userData.firstName} ` : "User"}
+              {loading ? "Loading..." : userData ? `${userData.userName} ` : "User"}
               <FontAwesomeIcon icon={faUser} className="iconspace-green" />
 
 

@@ -17,9 +17,7 @@ function User() {
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
-  useEffect(() => {
-    dispatch(fetchUserProfile());
-  }, [dispatch, userData]); // Ajout de `userData` pour déclencher la mise à jour
+
 
 
   return (
@@ -36,7 +34,7 @@ function User() {
 
         <div>
           <FontAwesomeIcon icon={faCircleUser} className="iconspace" />
-          {loading ? "Loading..." : userData ? `${userData.firstName} ` : "User"}
+          {loading ? "Loading..." : userData ? `${userData.userName} ` : "User"}
 
           <Link className="main-nav-item" to="/sign-out">
             <FontAwesomeIcon icon={faRightToBracket} className="iconspace" />
@@ -58,7 +56,7 @@ function User() {
           <Link to="/edit" className="edit-button">Edit Name</Link>
         </div>
         <h2 className="sr-only">Accounts</h2>
-        <section className="account">
+        <section className="account-user">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Checking (x8349)</h3>
             <p className="account-amount">$2,082.79</p>
@@ -68,7 +66,7 @@ function User() {
             <button className="transaction-button">View transactions</button>
           </div>
         </section>
-        <section className="account">
+        <section className="account-user">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Savings (x6712)</h3>
             <p className="account-amount">$10,928.42</p>
@@ -78,7 +76,7 @@ function User() {
             <button className="transaction-button">View transactions</button>
           </div>
         </section>
-        <section className="account">
+        <section className="account-user">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Credit Card (x5201)</h3>
             <p className="account-amount">$184.30</p>

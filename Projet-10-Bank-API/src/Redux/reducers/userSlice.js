@@ -37,6 +37,7 @@ export const fetchUserProfile = createAsyncThunk(
 
     // On doit attendre la réponse JSON avant d'utiliser data
     const data = await response.json();
+    console.log(data);
 
     // Vérification si le token a expiré
     if (response.status === 401 && data.message === "jwt expired") {
@@ -50,7 +51,7 @@ export const fetchUserProfile = createAsyncThunk(
       throw new Error(data.message || "Erreur lors de la récupération du profil");
     }
 
-    return data; // Retourne les données pour Redux
+    return data.body; // Retourne les données pour Redux
   }
 );
 
@@ -62,48 +63,41 @@ export const fetchUserProfile = createAsyncThunk(
 // Mettre à jour les informations utilisateur
 export const updateUserProfile = createAsyncThunk(
   'user/updateProfile',
-  async ({ userName }, { getState, dispatch }) => {
+  async ({ userName }, { getState, dispatch, rejectWithValue }) => {
     const token = getState().user.token;
-    console.log("Token actuel avant update :", token); // Vérification
-
-    if (!token) {
-      throw new Error("Erreur : Aucun token trouvé. L'utilisateur doit être connecté.");
-    }
+    if (!token) return rejectWithValue("Utilisateur non authentifié");
 
     try {
       const response = await fetch('http://localhost:3001/api/v1/user/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ userName }),
       });
 
-      // Si la réponse n'est pas OK (status 200)
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        // Vérification d'une erreur 401 avec message "jwt expired"
-        if (response.status === 401 && data.message === "jwt expired") {
-          console.log("Token expiré, déconnexion forcée !");
-          dispatch(logoutUser()); // Déconnecte l'utilisateur
-          return;
+        if (response.status === 401 && data.message === 'jwt expired') {
+          console.warn('Token expiré, déconnexion forcée !');
+          dispatch(logoutUser());
+          return rejectWithValue('Session expirée, veuillez vous reconnecter.');
         }
-        // Si autre erreur lève une exception
-        throw new Error(`Erreur API: ${response.status} - ${data.message}`);
+        return rejectWithValue(data.message || 'Erreur de mise à jour');
       }
 
-      // Si tout va bien retour des données mises à jour
-      const data = await response.json();
-      return data;
+      if (!data.body) {
+        return rejectWithValue("Réponse API invalide : aucun body retourné");
+      }
 
+      return data.body; // Assure-toi que Redux reçoit bien `body`
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du profil:", error);
-      throw error; // Remonte l'erreur pour qu'elle soit capturée dans le reducer
+      return rejectWithValue(error.message || 'Erreur réseau');
     }
   }
 );
-
 
 export const logoutUser = createAction("user/logout");
 
