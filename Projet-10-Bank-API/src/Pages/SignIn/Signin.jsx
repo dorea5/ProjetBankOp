@@ -30,7 +30,7 @@ function SignIn() {
   return (
     <div>
       <Header />
-      <main className="main bg-dark">
+      <main className="main bg-dark-signin">
         <section className="sign-in-content">
           <FontAwesomeIcon icon={faCircleUser} />
           <h1>Sign In</h1>
