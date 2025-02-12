@@ -9,6 +9,7 @@ import Edit from "./Pages/Edit/Edit";
 import SignUp from "./Pages/SignUp/SignUp";
 import SignOut from "./Pages/SignOut/SignOut";
 import Transactions from "./Pages/Transactions/Transaction";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
   return (
@@ -18,10 +19,23 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-out" element={<SignOut />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/edit" element={<Edit />} />
+          <Route path="/user" element={
+            <ProtectedRoute>
+              <User />
+            </ProtectedRoute>} />
+          <Route path="/edit" element={
+            <ProtectedRoute>
+              <Edit />
+            </ProtectedRoute>
+
+
+          } />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/transactions" element={
+            <ProtectedRoute>
+              <Transactions />
+            </ProtectedRoute>
+          } />
 
 
         </Routes>

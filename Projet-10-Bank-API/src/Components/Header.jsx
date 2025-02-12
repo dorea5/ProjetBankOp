@@ -12,7 +12,7 @@ function Header() {
             src={argentbanklogo}
             alt="Argent Bank Logo"
           />
-          <h1 className="sr-only">Argent Bank</h1>
+
         </a>
         <div>
           <a className="main-nav-item" href="/sign-in">
