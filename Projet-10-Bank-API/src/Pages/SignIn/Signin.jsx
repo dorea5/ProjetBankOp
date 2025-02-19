@@ -3,7 +3,7 @@ import Header from "../../Components/Header";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../Redux/reducers/userSlice";
+import { loginUser, resetError } from "../../Redux/reducers/userSlice";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -19,6 +19,8 @@ function SignIn() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    dispatch(resetError());
+
 
     const result = await dispatch(loginUser({ email: username, password }));
 
@@ -41,7 +43,10 @@ function SignIn() {
                 type="text"
                 id="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  dispatch(resetError());
+                }}
               />
             </div>
             <div className="input-wrapper">
@@ -50,7 +55,10 @@ function SignIn() {
                 type="password"
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  dispatch(resetError());
+                }}
               />
             </div>
             <div className="input-remember">

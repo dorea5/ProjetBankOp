@@ -10,9 +10,11 @@ function SignUp() {
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     console.log('SignUp Data:', { email, password, firstName, lastName });
+
     try {
       const response = await fetch('http://localhost:3001/api/v1/user/signup', {
         method: 'POST',
@@ -27,6 +29,19 @@ function SignUp() {
         const errorData = await response.json();
         console.error('SignUp Error:', errorData);
         setError('Failed to sign up. Please try again.');
+        if (errorData && errorData.message) {  //Check if errorData and message exists
+          setError(errorData.message); // Display the message from the backend
+        } else if (response.status === 400) { // Example: Check for 400 Bad Request
+          setError("Invalid email or password. Please check your input.");
+        } else if (response.status === 401) { // Example: Check for 401 Unauthorized
+          setError("Incorrect password.");
+        } else if (response.status === 409) { // Example: Check for 409 Conflict (e.g., email already exists)
+          setError("Email already exists. Please use a different email.");
+        } else {
+          setError('Failed to sign up. Please try again.'); // Generic error
+        }
+
+
       }
     } catch (err) {
       console.error(err);

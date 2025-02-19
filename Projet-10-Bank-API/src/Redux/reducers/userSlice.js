@@ -10,7 +10,12 @@ export const loginUser = createAsyncThunk('user/login', async (credentials, { re
     });
 
     if (!response.ok) {
-      throw new Error('Invalid credentials');
+      const errorData = await response.json(); 
+      if (errorData && errorData.message) {
+        return rejectWithValue(errorData.message); // Reject with server message
+      } else {
+        return rejectWithValue("Erreur de connexion.")
+      }
     }
 
     const data = await response.json();
@@ -25,23 +30,22 @@ export const loginUser = createAsyncThunk('user/login', async (credentials, { re
 export const fetchUserProfile = createAsyncThunk(
   "user/fetchProfile",
   async (_, { dispatch, getState }) => {
-    const { token } = getState().user;
+    const { token } = getState().user;   //recupère le token depuis redux
 
     const response = await fetch("http://localhost:3001/api/v1/user/profile", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,   
       },
     });
 
     // On doit attendre la réponse JSON avant d'utiliser data
     const data = await response.json();
-    console.log(data);
-
+    
     // Vérification si le token a expiré
     if (response.status === 401 && data.message === "jwt expired") {
-      console.log("Token expiré, redirection vers la connexion...");
+     
       dispatch(logoutUser()); // Déconnexion
       window.location.href = "/sign-in"; // Redirection
       return Promise.reject(new Error("Token expiré"));
@@ -51,7 +55,7 @@ export const fetchUserProfile = createAsyncThunk(
       throw new Error(data.message || "Erreur lors de la récupération du profil");
     }
 
-    return data.body; // Retourne les données pour Redux
+    return data.body; // Retourne les données du profil utilisateur
   }
 );
 
@@ -74,7 +78,7 @@ export const updateUserProfile = createAsyncThunk(
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userName }),
+        body: JSON.stringify({ userName }), //envoi du nouveau nom utilisateur au serveur grace a put
       });
 
       const data = await response.json();
@@ -92,7 +96,7 @@ export const updateUserProfile = createAsyncThunk(
         return rejectWithValue("Réponse API invalide : aucun body retourné");
       }
 
-      return data.body; // Assure-toi que Redux reçoit bien `body`
+      return data.body; // Redux reçoit les données du profil maj
     } catch (error) {
       return rejectWithValue(error.message || 'Erreur réseau');
     }
@@ -116,6 +120,9 @@ const userSlice = createSlice({
       state.userData = null;
       localStorage.removeItem('token');
     },
+      resetError: (state) => {
+        state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -130,7 +137,10 @@ const userSlice = createSlice({
         state.userData = action.payload;
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
-        state.userData = action.payload; // Met à jour Redux après modification
+        state.userData = action.payload;}) // Met à jour Redux après modification
+        .addCase(loginUser.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload
       });
   },
 });
@@ -138,3 +148,4 @@ const userSlice = createSlice({
 
 export const { logout } = userSlice.actions;
 export default userSlice.reducer;
+export const { resetError } = userSlice.actions;
